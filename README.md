@@ -85,6 +85,8 @@ For more information, be sure to check out our [Open WebUI Documentation](https:
 
 - 🛡️ **Transparent Security Process**: Security reports are triaged, fixed, and published as open advisories through a documented responsible-disclosure process. See our [Security Policy](https://github.com/open-webui/open-webui/security).
 
+- 🛰️ **Intelligence Workspace (offline)**: A built-in `/intel` workspace with three modes — a configurable topic expert, an Elasticsearch-backed flight table with an offline trajectory map, and a file analyst. See [INTEL.md](INTEL.md) to connect your index and change the expert prompt.
+
 Want to learn more about Open WebUI's features? Check out our [Open WebUI documentation](https://docs.openwebui.com/features) for a comprehensive overview!
 
 ## The Open WebUI Ecosystem 🌐

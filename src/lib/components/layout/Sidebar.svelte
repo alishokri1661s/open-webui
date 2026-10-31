@@ -93,6 +93,7 @@
 	import SearchIcon from './Sidebar/icons/Search.svelte';
 	import Sidebar from '../icons/Sidebar.svelte';
 	import WorkspaceIcon from './Sidebar/icons/Workspace.svelte';
+import GlobeAltIcon from '../icons/GlobeAlt.svelte';
 	import HotkeyHint from '../common/HotkeyHint.svelte';
 	import Dropdown from '../common/Dropdown.svelte';
 	import DropdownMenu from '../common/DropdownMenu.svelte';
@@ -105,7 +106,7 @@
 	import MobileSwipePanel from '../common/MobileSwipePanel.svelte';
 
 	const BREAKPOINT = 768;
-	const DEFAULT_PINNED_ITEMS = ['notes', 'workspace'];
+	const DEFAULT_PINNED_ITEMS = ['intel', 'notes', 'workspace'];
 
 	let scrollTop = 0;
 
@@ -272,10 +273,16 @@
 		folderRegistry[folder.id]?.setFolderItems?.();
 	};
 
-	$: pinnedItems = $settings?.pinnedMenuItems ?? DEFAULT_PINNED_ITEMS;
+	// The Intelligence workspace is always available from the sidebar, even for
+	// accounts whose pinned menu list predates it.
+	$: pinnedItems = Array.from(
+		new Set<string>([...($settings?.pinnedMenuItems ?? DEFAULT_PINNED_ITEMS), 'intel'])
+	);
 
 	$: isMenuItemVisible = (id) => {
 		switch (id) {
+			case 'intel':
+				return true;
 			case 'notes':
 				return (
 					($config?.features?.enable_notes ?? false) &&
@@ -309,6 +316,7 @@
 
 	const getMenuItemMeta = (id) => {
 		const items = {
+			intel: { label: $i18n.t('Intelligence'), href: '/intel', iconType: 'globe' },
 			notes: { label: $i18n.t('Notes'), href: '/notes', iconType: 'note' },
 			workspace: { label: $i18n.t('Workspace'), href: '/workspace', iconType: 'workspace' },
 			automations: { label: $i18n.t('Automations'), href: '/automations', iconType: 'automations' },
@@ -319,6 +327,7 @@
 	};
 
 	const menuItemPathPrefixes = {
+		intel: '/intel',
 		notes: '/notes',
 		workspace: '/workspace',
 		calendar: '/calendar',
@@ -1187,7 +1196,9 @@
 													: 'bg-black/[0.035] dark:bg-white/[0.045]'
 												: 'group-hover:bg-gray-100 dark:group-hover:bg-gray-900'}"
 										>
-											{#if itemId === 'notes'}
+											{#if itemId === 'intel'}
+												<GlobeAltIcon className="size-4" strokeWidth="1.5" />
+											{:else if itemId === 'notes'}
 												<NotesIcon className="size-4" strokeWidth="1.5" />
 											{:else if itemId === 'workspace'}
 												<WorkspaceIcon className="size-4" strokeWidth="1.5" />
@@ -1413,7 +1424,9 @@
 											aria-label={$i18n.t(meta.label)}
 										>
 											<div class="self-center flex size-4 shrink-0 items-center justify-center">
-												{#if itemId === 'notes'}
+												{#if itemId === 'intel'}
+													<GlobeAltIcon className="size-4" strokeWidth="1.5" />
+												{:else if itemId === 'notes'}
 													<NotesIcon className="size-4" strokeWidth="1.5" />
 												{:else if itemId === 'workspace'}
 													<WorkspaceIcon className="size-4" strokeWidth="1.5" />
