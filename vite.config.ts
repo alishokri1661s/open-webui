@@ -36,6 +36,8 @@ export default defineConfig({
 		sourcemap: true
 	},
 	server: {
+		// Allow the dev server to be reached through a reverse proxy / preview host.
+		allowedHosts: true,
 		proxy: {
 			'/api': {
 				target: backendTarget,
